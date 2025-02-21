@@ -1,9 +1,27 @@
 - Bootstrap instagram clone development
 
 
-    - user registration
+    X user registration
     - add/remove friends
     - post picture with description
     - post likes counters
     - comments on posts
 
+
+- Users page
+
+/users - List of all users, so you can add to friends or remove them
+
+PUT /users/:id/follow - Follow an user specified by ID
+DELETE /users/:id/unfollow - Unfollow an user specified by ID
+
+
+
+
+
+
+
+
+
+GET /followers
+GET /following
