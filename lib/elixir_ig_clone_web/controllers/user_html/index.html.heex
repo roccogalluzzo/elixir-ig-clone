@@ -1,12 +1,3 @@
-<.header>
-  Listing Users
-  <:actions>
-    <.link href={~p"/users/new"}>
-      <.button>New User</.button>
-    </.link>
-  </:actions>
-</.header>
-
 <.table id="users" rows={@users} row_click={&JS.navigate(~p"/users/#{&1}")}>
   <:action :let={user}>
     <div class="sr-only">

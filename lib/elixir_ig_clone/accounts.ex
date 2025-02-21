@@ -363,21 +363,8 @@ defmodule ElixirIgClone.Accounts do
 
   """
   def list_users do
-    raise "TODO"
+    Repo.all(User)
   end
-
-  @doc """
-  Gets a single user.
-
-  Raises if the User does not exist.
-
-  ## Examples
-
-      iex> get_user!(123)
-      %User{}
-
-  """
-  def get_user!(id), do: raise "TODO"
 
   @doc """
   Creates a user.
