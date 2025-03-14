@@ -28,6 +28,42 @@ defmodule ElixirIgCloneWeb.UserController do
     end
   end
 
+  # PUT /users/:id/follow
+  def follow(conn, %{"id" => id}) do
+    user = Accounts.get_user!(id)
+    current_user = Accounts.get_current_user(conn.assigns.current_user.id)
+
+    case Accounts.follow_user(current_user, user) do
+      {:ok, _} ->
+        conn
+        |> put_flash(:info, "User followed successfully.")
+        |> redirect(to: ~p"/users/#{user}")
+
+      {:error, _} ->
+        conn
+        |> put_flash(:error, "Error following user.")
+        |> redirect(to: ~p"/users/#{user}")
+    end
+  end
+
+  # DELETE /users/:id/unfollow
+  def unfollow(conn, %{"id" => id}) do
+    user = Accounts.get_user!(id)
+    current_user = Accounts.get_current_user(conn.assigns.current_user.id)
+
+    case Accounts.unfollow_user(current_user, user) do
+      {:ok, _} ->
+        conn
+        |> put_flash(:info, "User unfollowed successfully.")
+        |> redirect(to: ~p"/users/#{user}")
+
+      {:error, _} ->
+        conn
+        |> put_flash(:error, "Error unfollowing user.")
+        |> redirect(to: ~p"/users/#{user}")
+    end
+  end
+
   def delete(conn, %{"id" => id}) do
     user = Accounts.get_user!(id)
     {:ok, _user} = Accounts.delete_user(user)

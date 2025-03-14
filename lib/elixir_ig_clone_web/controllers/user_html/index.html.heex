@@ -1,4 +1,7 @@
 <.table id="users" rows={@users} row_click={&JS.navigate(~p"/users/#{&1}")}>
+  <:col :let={user} label="id"><%= user.id %></:col>
+  <:col :let={user} label="email"><%= user.email %></:col>
+
   <:action :let={user}>
     <div class="sr-only">
       <.link navigate={~p"/users/#{user}"}>Show</.link>
@@ -6,8 +9,10 @@
     <.link navigate={~p"/users/#{user}/edit"}>Edit</.link>
   </:action>
   <:action :let={user}>
-    <.link href={~p"/users/#{user}"} method="delete" data-confirm="Are you sure?">
-      Delete
+    <.link href={~p"/users/#{user}/follow"} method="put">
+      Follow
     </.link>
   </:action>
 </.table>
+
+

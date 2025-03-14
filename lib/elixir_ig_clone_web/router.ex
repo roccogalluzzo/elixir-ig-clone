@@ -70,6 +70,8 @@ defmodule ElixirIgCloneWeb.Router do
     get "/users", UserController, :index
     get "/users/:id", UserController, :show
     put "/users/:id", UserController, :update
+    put "/users/:id/follow", UserController, :follow
+    delete "/users/:id/unfollow", UserController, :unfollow
     delete "/users/:id", UserController, :delete
   end
 
