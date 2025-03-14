@@ -9,6 +9,24 @@ defmodule ElixirIgClone.Accounts.User do
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
 
+    # todo: change to has_many
+    # We are follow
+    many_to_many :following, User, join_through: "follows", on_replace: :delete, join_keys: [user_id: :id, follow_to_id: :id]
+    # Someone is following us
+    many_to_many :followers, User, join_through: "follows", on_replace: :delete, join_keys: [follow_to_id: :id, user_id: :id]
+
+    # [Post] <-> [posts_tags] <-> [Tag]
+    # id   <--   post_id
+    #             tag_id    -->  id
+
+    # * `:join_keys` - Specifies how the schemas are associated. It
+    # expects a keyword list with two entries, the first being how
+    # the join table should reach the current schema and the second
+    # how the join table should reach the associated schema. In the
+    # example above, it defaults to: `[post_id: :id, tag_id: :id]`.
+    # The keys are inflected from the schema names.
+
+
     timestamps(type: :utc_datetime)
   end
 

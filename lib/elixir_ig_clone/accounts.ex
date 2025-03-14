@@ -60,6 +60,17 @@ defmodule ElixirIgClone.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def follow_user(%User{} = user, %User{} = follow_to) do
+    # # Insert the follow relationship via a transaction
+    # Ecto.Multi.new()
+    # |> Ecto.Multi.insert(:follow, %Follow{user: user, follow_to: follow_to})
+
+
+    %Follow{user: user, follow_to: follow_to}
+    |> Repo.insert_or_update()
+  end
+
+
   ## User registration
 
   @doc """
