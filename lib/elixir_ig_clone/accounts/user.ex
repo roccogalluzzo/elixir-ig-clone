@@ -11,9 +11,9 @@ defmodule ElixirIgClone.Accounts.User do
 
     # todo: change to has_many
     # We are follow
-    many_to_many :following, User, join_through: "follows", on_replace: :delete, join_keys: [user_id: :id, follow_to_id: :id]
+    many_to_many :following, ElixirIgClone.Accounts.User, join_through: "follows", on_replace: :delete, join_keys: [user_id: :id, follow_to_id: :id]
     # Someone is following us
-    many_to_many :followers, User, join_through: "follows", on_replace: :delete, join_keys: [follow_to_id: :id, user_id: :id]
+    many_to_many :followers, ElixirIgClone.Accounts.User, join_through: "follows", on_replace: :delete, join_keys: [follow_to_id: :id, user_id: :id]
 
     # [Post] <-> [posts_tags] <-> [Tag]
     # id   <--   post_id
