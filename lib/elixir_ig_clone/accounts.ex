@@ -66,8 +66,8 @@ defmodule ElixirIgClone.Accounts do
     # |> Ecto.Multi.insert(:follow, %Follow{user: user, follow_to: follow_to})
 
 
-    %Follow{user: user, follow_to: follow_to}
-    |> Repo.insert_or_update()
+    # %Follow{user: user, follow_to: follow_to}
+    # |> Repo.insert_or_update()
   end
 
 
