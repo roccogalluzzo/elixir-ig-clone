@@ -5,8 +5,9 @@ defmodule ElixirIgCloneWeb.UserController do
   alias ElixirIgClone.Accounts.User
 
   def index(conn, _params) do
-    users = Accounts.list_users()
-    render(conn, :index, users: users)
+    users     = Accounts.list_users()
+    following = Repo.preload(conn.assigns.current_user, :following).following
+    render(conn, :index, users: users, following: following)
   end
 
   def show(conn, %{"id" => id}) do
@@ -31,18 +32,18 @@ defmodule ElixirIgCloneWeb.UserController do
   # PUT /users/:id/follow
   def follow(conn, %{"id" => id}) do
     user = Accounts.get_user!(id)
-    current_user = Accounts.get_current_user(conn.assigns.current_user.id)
+    current_user = conn.assigns.current_user
 
     case Accounts.follow_user(current_user, user) do
       {:ok, _} ->
         conn
         |> put_flash(:info, "User followed successfully.")
-        |> redirect(to: ~p"/users/#{user}")
+        |> redirect(to: ~p"/users")
 
       {:error, _} ->
         conn
         |> put_flash(:error, "Error following user.")
-        |> redirect(to: ~p"/users/#{user}")
+        |> redirect(to: ~p"/users")
     end
   end
 

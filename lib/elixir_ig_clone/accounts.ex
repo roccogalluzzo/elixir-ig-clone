@@ -63,8 +63,9 @@ defmodule ElixirIgClone.Accounts do
   def follow_user(%User{} = user, %User{} = follow_to) do
     # # Insert the follow relationship via a transaction
     %Follow{}
-    |> Follow.changeset(user_id: user.id, follow_to_id: follow_to.id)
-    |> Repo.insert()
+    |> Follow.changeset(%{ user_id: user.id, follow_to_id: follow_to.id })
+    |> Repo.insert(on_conflict: :nothing)
+    |> IO.inspect(label: "Follow User")
   end
 
 

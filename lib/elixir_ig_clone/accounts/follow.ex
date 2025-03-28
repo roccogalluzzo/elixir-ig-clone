@@ -15,7 +15,7 @@ defmodule ElixirIgClone.Accounts.Follow do
   @doc false
   def changeset(follow, attrs) do
     follow
-    |> cast(attrs, [])
+    |> cast(attrs, [:user_id, :follow_to_id])
     |> validate_required([:user_id, :follow_to_id])
   end
 end
