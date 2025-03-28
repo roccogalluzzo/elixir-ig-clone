@@ -6,7 +6,7 @@ defmodule ElixirIgClone.Accounts do
   import Ecto.Query, warn: false
   alias ElixirIgClone.Repo
 
-  alias ElixirIgClone.Accounts.{User, UserToken, UserNotifier}
+  alias ElixirIgClone.Accounts.{User, UserToken, UserNotifier, Follow}
 
   ## Database getters
 
@@ -62,12 +62,9 @@ defmodule ElixirIgClone.Accounts do
 
   def follow_user(%User{} = user, %User{} = follow_to) do
     # # Insert the follow relationship via a transaction
-    # Ecto.Multi.new()
-    # |> Ecto.Multi.insert(:follow, %Follow{user: user, follow_to: follow_to})
-
-
-    # %Follow{user: user, follow_to: follow_to}
-    # |> Repo.insert_or_update()
+    %Follow{}
+    |> Follow.changeset(user_id: user.id, follow_to_id: follow_to.id)
+    |> Repo.insert()
   end
 
 
