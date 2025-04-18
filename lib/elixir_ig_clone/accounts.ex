@@ -68,6 +68,13 @@ defmodule ElixirIgClone.Accounts do
     |> IO.inspect(label: "Follow User")
   end
 
+  def unfollow_user(%User{} = user, %User{} = unfollow_from) do
+    follow = Follow
+    |> Repo.get_by!(user_id: user.id, follow_to_id: unfollow_from.id)
+    |> Repo.delete()
+    |> IO.inspect(label: "Unfollow User")
+  end
+
 
   ## User registration
 
