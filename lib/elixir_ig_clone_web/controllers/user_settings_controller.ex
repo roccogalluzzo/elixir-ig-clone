@@ -10,6 +10,22 @@ defmodule ElixirIgCloneWeb.UserSettingsController do
     render(conn, :edit)
   end
 
+  def update(conn, %{"action" => "update_avatar"} = params) do
+    %{"user" => user_params} = params
+    user = conn.assigns.current_user
+
+    case Accounts.update_user_avatar(user, user_params) do
+      {:ok, user} ->
+        conn
+        |> put_flash(:info, "Avatar updated successfully.")
+        |> put_session(:user_return_to, ~p"/users/settings")
+        |> UserAuth.log_in_user(user)
+
+      {:error, changeset} ->
+        render(conn, :edit, password_changeset: changeset)
+    end
+  end
+
   def update(conn, %{"action" => "update_email"} = params) do
     %{"current_password" => password, "user" => user_params} = params
     user = conn.assigns.current_user
@@ -68,6 +84,7 @@ defmodule ElixirIgCloneWeb.UserSettingsController do
     user = conn.assigns.current_user
 
     conn
+    |> assign(:avatar_changeset, Accounts.change_user_avatar(user))
     |> assign(:email_changeset, Accounts.change_user_email(user))
     |> assign(:password_changeset, Accounts.change_user_password(user))
   end

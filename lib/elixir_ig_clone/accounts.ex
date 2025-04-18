@@ -124,6 +124,10 @@ defmodule ElixirIgClone.Accounts do
     User.email_changeset(user, attrs, validate_email: false)
   end
 
+  def change_user_avatar(user, attrs \\ %{}) do
+    User.avatar_changeset(user, attrs, validate_email: false)
+  end
+
   @doc """
   Emulates that the email will change without actually changing
   it in the database.
@@ -162,6 +166,7 @@ defmodule ElixirIgClone.Accounts do
     end
   end
 
+
   defp user_email_multi(user, email, context) do
     changeset =
       user
@@ -171,6 +176,20 @@ defmodule ElixirIgClone.Accounts do
     Ecto.Multi.new()
     |> Ecto.Multi.update(:user, changeset)
     |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, [context]))
+  end
+
+  def update_user_avatar(user, attrs) do
+    changeset =
+      user
+      |> User.avatar_changeset(attrs)
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:user, changeset)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{user: user}} -> {:ok, user}
+      {:error, :user, changeset, _} -> {:error, changeset}
+    end
   end
 
   @doc ~S"""

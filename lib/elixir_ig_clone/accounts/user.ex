@@ -8,6 +8,7 @@ defmodule ElixirIgClone.Accounts.User do
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
+    field :avatar, :string
 
     # todo: change to has_many
     # We are follow
@@ -57,7 +58,7 @@ defmodule ElixirIgClone.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :avatar])
     |> validate_email(opts)
     |> validate_password(opts)
   end
@@ -120,6 +121,15 @@ defmodule ElixirIgClone.Accounts.User do
     |> case do
       %{changes: %{email: _}} = changeset -> changeset
       %{} = changeset -> add_error(changeset, :email, "did not change")
+    end
+  end
+
+  def avatar_changeset(user, attrs, _opts \\ []) do
+    user
+    |> cast(attrs, [:avatar])
+    |> case do
+      %{changes: %{avatar: _}} = changeset -> changeset
+      %{} = changeset -> add_error(changeset, :avatar, "did not change")
     end
   end
 
