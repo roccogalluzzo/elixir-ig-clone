@@ -6,13 +6,17 @@
     <div class="sr-only">
       <.link navigate={~p"/users/#{user}"}>Show</.link>
     </div>
-    <.link navigate={~p"/users/#{user}/edit"}>Edit</.link>
+
+    <%= if user.id == @current_user.id do %>
+      <.link navigate={~p"/users/#{user}/edit"}>Edit</.link>
+    <% end %>
+
   </:action>
   <:action :let={user}>
-<%= if user.id not in Enum.map(@following, & &1.follow_to_id) do %>
-    <.link href={~p"/users/#{user}/follow"} method="put">
-      Follow
-    </.link>
+    <%= if user.id not in Enum.map(@following, & &1.follow_to_id) do %>
+      <.link href={~p"/users/#{user}/follow"} method="put">
+        Follow
+      </.link>
     <% else %>
       <.link href={~p"/users/#{user}/unfollow"} method="delete">
         Unfollow

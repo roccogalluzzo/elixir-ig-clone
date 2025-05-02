@@ -8,7 +8,7 @@ defmodule ElixirIgCloneWeb.UserController do
   def index(conn, _params) do
     users     = Accounts.list_users()
     following = Repo.preload(conn.assigns.current_user, :following).following
-    render(conn, :index, users: users, following: following)
+    render(conn, :index, users: users, following: following, current_user: conn.assigns.current_user)
   end
 
   def show(conn, %{"id" => id}) do

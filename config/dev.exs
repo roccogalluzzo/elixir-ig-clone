@@ -83,3 +83,8 @@ config :phoenix_live_view,
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+# https://github.com/elixir-waffle/waffle
+config :waffle,
+  storage: Waffle.Storage.Local,
+  asset_host: "http://localhost:4000"

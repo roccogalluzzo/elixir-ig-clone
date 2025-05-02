@@ -11,6 +11,16 @@
       </.error>
       <input type="hidden" name="action" value="update_avatar" />
 
+      <%= if @conn.assigns.current_user.avatar do %>
+        <div class="mb-4">
+          <img
+            src={ElixirIgClone.Uploaders.AvatarUploader.url({@conn.assigns.current_user.avatar, @conn.assigns.current_user}, :original)}
+            alt="User Avatar"
+            class="w-32 h-32 rounded-full"
+          />
+        </div>
+      <% end %>
+
       <.input field={f[:avatar]} type="file" label="Avatar" required />
 
       <:actions>

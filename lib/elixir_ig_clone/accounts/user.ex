@@ -1,5 +1,6 @@
 defmodule ElixirIgClone.Accounts.User do
   use Ecto.Schema
+  use Waffle.Ecto.Schema
   import Ecto.Changeset
 
   schema "users" do
@@ -8,7 +9,8 @@ defmodule ElixirIgClone.Accounts.User do
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
-    field :avatar, :string
+    # field :avatar, :string
+    field :avatar, ElixirIgClone.Uploaders.AvatarUploader.Type
 
     # todo: change to has_many
     # We are follow
@@ -125,8 +127,16 @@ defmodule ElixirIgClone.Accounts.User do
   end
 
   def avatar_changeset(user, attrs, _opts \\ []) do
+    # user
+    # |> cast(attrs, [:avatar])
+    # |> case do
+    #   %{changes: %{avatar: _}} = changeset -> changeset
+    #   %{} = changeset -> add_error(changeset, :avatar, "did not change")
+    # end
+
     user
-    |> cast(attrs, [:avatar])
+    |> cast_attachments(attrs, [:avatar])
+    |> validate_required([:avatar])
     |> case do
       %{changes: %{avatar: _}} = changeset -> changeset
       %{} = changeset -> add_error(changeset, :avatar, "did not change")
