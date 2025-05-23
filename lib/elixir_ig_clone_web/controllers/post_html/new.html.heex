@@ -1,0 +1,21 @@
+<h1>New Post</h1>
+<.form for={@changeset} action={~p"/posts"} multipart>
+  <div>
+    <label>Title</label>
+    <.input field={@changeset[:title]} />
+  </div>
+  <div>
+    <label>Description</label>
+    <.input field={@changeset[:description]} />
+  </div>
+  <div>
+    <label>Image</label>
+    <input type="file" name="post[image]" />
+  </div>
+  <div>
+    <label>User ID</label>
+    <.input field={@changeset[:user_id]} />
+  </div>
+  <button type="submit">Create Post</button>
+</.form>
+<a href={~p"/posts"}>Back</a>

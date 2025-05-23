@@ -1,0 +1,25 @@
+<h1>Edit Post</h1>
+<.form for={@changeset} action={~p"/posts/#{@post}"} multipart>
+  <input type="hidden" name="_method" value="put" />
+  <div>
+    <label>Title</label>
+    <.input field={@changeset[:title]} />
+  </div>
+  <div>
+    <label>Description</label>
+    <.input field={@changeset[:description]} />
+  </div>
+  <div>
+    <label>Image</label>
+    <input type="file" name="post[image]" />
+    <%= if @post.image do %>
+      <img src={ElixirIgClone.Uploaders.PostImageUploader.url({@post.image, @post})} style="max-width: 200px;"/>
+    <% end %>
+  </div>
+  <div>
+    <label>User ID</label>
+    <.input field={@changeset[:user_id]} />
+  </div>
+  <button type="submit">Update Post</button>
+</.form>
+<a href={~p"/posts"}>Back</a>

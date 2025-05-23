@@ -73,6 +73,10 @@ defmodule ElixirIgCloneWeb.Router do
     put "/users/:id/follow", UserController, :follow
     delete "/users/:id/unfollow", UserController, :unfollow
     delete "/users/:id", UserController, :delete
+
+    scope "/users/:user_id/posts" do
+      resources "/", PostController
+    end
   end
 
   scope "/", ElixirIgCloneWeb do
