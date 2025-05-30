@@ -1,21 +1,14 @@
 <h1>New Post</h1>
-<.form for={@changeset} action={~p"/posts"} multipart>
-  <div>
-    <label>Title</label>
-    <.input field={@changeset[:title]} />
-  </div>
-  <div>
-    <label>Description</label>
-    <.input field={@changeset[:description]} />
-  </div>
-  <div>
-    <label>Image</label>
-    <input type="file" name="post[image]" />
-  </div>
-  <div>
-    <label>User ID</label>
-    <.input field={@changeset[:user_id]} />
-  </div>
-  <button type="submit">Create Post</button>
-</.form>
+<.simple_form for={@changeset} as={:post} action={~p"/posts"} multipart :let={f}>
+        <.error :if={@changeset.action}>
+        Oops, something went wrong! Please check the errors below.
+      </.error>
+
+  <.input field={f[:title]} label="Title" />
+  <.input field={f[:description]} label="Description" />
+  <.input type="file" field={f[:image]} label="Image" />
+  <:actions>
+    <button type="submit">Create Post</button>
+  </:actions>
+</.simple_form>
 <a href={~p"/posts"}>Back</a>

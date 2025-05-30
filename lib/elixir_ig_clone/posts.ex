@@ -10,9 +10,20 @@ defmodule ElixirIgClone.Posts do
   def get_post!(id), do: Repo.get!(Post, id)
 
   def create_post(attrs \\ %{}) do
-    %Post{}
-    |> Post.changeset(attrs)
-    |> Repo.insert()
+    Repo.transaction(fn ->
+      with {:ok, post} <-
+             %Post{}
+             |> Post.changeset(attrs)
+             |> Repo.insert(),
+           {:ok, post} <-
+             post
+             |> Post.image_changeset(attrs)
+             |> Repo.update() do
+        post
+      else
+        error -> Repo.rollback(error)
+      end
+    end)
   end
 
   def update_post(%Post{} = post, attrs) do

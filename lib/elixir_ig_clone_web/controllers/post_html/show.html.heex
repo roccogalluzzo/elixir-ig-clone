@@ -1,9 +1,10 @@
 <h1>Show Post</h1>
 <p>Title: <%= @post.title %></p>
 <p>Description: <%= @post.description %></p>
-<% if @post.image do %>
-  <img src={ElixirIgClone.Uploaders.PostImageUploader.url({@post.image, @post})} style="max-width: 300px;"/>
-<% end %>
+  <img src={ElixirIgClone.Uploaders.PostImageUploader.url({@post.image, @post}, :original)} style="max-width: 300px;"/>
+
+
+
 <p>User ID: <%= @post.user_id %></p>
 <a href={~p"/posts/#{@post}/edit"}>Edit</a>
 <a href={~p"/posts"}>Back</a>

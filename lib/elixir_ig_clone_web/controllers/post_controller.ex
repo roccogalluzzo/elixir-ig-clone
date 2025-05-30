@@ -4,49 +4,37 @@ defmodule ElixirIgCloneWeb.PostController do
   alias ElixirIgClone.Posts
   alias ElixirIgClone.Posts.Post
 
-  def index(conn, %{"user_id" => user_id}) do
-    user = ElixirIgClone.Accounts.get_user!(user_id)
+  def index(conn, _params) do
+    user = conn.assigns.current_user
     posts = Posts.list_posts_for_user(user.id)
     render(conn, :index, posts: posts, user: user)
   end
 
-  def new(conn, %{"user_id" => user_id}) do
+  def new(conn, _params) do
     user = conn.assigns.current_user
 
-    if Integer.to_string(user.id) == user_id do
-      changeset = Posts.change_post(%Post{})
-      render(conn, :new, changeset: changeset, user: user)
-    else
-      conn
-      |> put_flash(:error, "You are not authorized to create a post for this user.")
-      |> redirect(to: ~p"/users/#{user.id}/posts")
-    end
+    changeset = Posts.change_post(%Post{})
+    render(conn, :new, changeset: changeset, user: user)
   end
 
-  def create(conn, %{"user_id" => user_id, "post" => post_params}) do
+  def create(conn, %{"post" => post_params}) do
     user = conn.assigns.current_user
+    post_params = Map.put(post_params, "user_id", user.id)
 
-    if Integer.to_string(user.id) == user_id do
-      post_params = Map.put(post_params, "user_id", user.id)
+    case Posts.create_post(post_params) do
+      {:ok, post} ->
+        conn
+        |> put_flash(:info, "Post created successfully.")
+        |> redirect(to: ~p"/posts/#{post.id}")
 
-      case Posts.create_post(post_params) do
-        {:ok, post} ->
-          conn
-          |> put_flash(:info, "Post created successfully.")
-          |> redirect(to: ~p"/users/#{user.id}/posts/#{post.id}")
-
-        {:error, %Ecto.Changeset{} = changeset} ->
-          render(conn, :new, changeset: changeset, user: user)
-      end
-    else
-      conn
-      |> put_flash(:error, "You are not authorized to create a post for this user.")
-      |> redirect(to: ~p"/users/#{user.id}/posts")
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, :new, changeset: changeset, user: user)
     end
+
   end
 
-  def show(conn, %{"user_id" => user_id, "id" => id}) do
-    user = ElixirIgClone.Accounts.get_user!(user_id)
+  def show(conn, %{"id" => id}) do
+    user = conn.assigns.current_user
     post = Posts.get_post!(id)
     render(conn, :show, post: post, user: user)
   end
