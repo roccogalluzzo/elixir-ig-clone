@@ -35,3 +35,4 @@ elixir_ig_clone-*.tar
 npm-debug.log
 /assets/node_modules/
 
+/uploads
